@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { UseDispatch } from 'react-redux';
+import { loginSuccess } from '../Store/authSlice';
 
 const Login = () => {
 	const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
+	const dispatch = UseDispatch()
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -27,6 +30,7 @@ const Login = () => {
 		console.log("formdata:",formData);
 
 		try {
+			const resultAction = await dispatch(loginSuccess(formData));
 			const response = await fetch('http://localhost:5000/api/user/login', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
